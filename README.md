@@ -93,53 +93,6 @@ PIVOT
 ORDER BY Outlet_Location_Type;
 ```
  
-## Query Explanations
-This query aims to transform the blinkit_data table to display total sales (Total_Sales) for each combination of Outlet_Location_Type and Item_Fat_Content. The result will show Outlet_Location_Type as rows and Item_Fat_Content categories ("Low Fat" and "Regular") as columns. If there are no sales for a particular combination, the query will display 0 instead of NULL.
-Detailed Explanation:
-## 1.Subquery
-• Aggregation:
-
-SELECT 
-    Outlet_Location_Type, 
-    Item_Fat_Content, 
-    CAST(SUM(Total_Sales) AS DECIMAL(10,2)) AS Total_Sales
-FROM 
-    blinkit_data
-GROUP BY 
-    Outlet_Location_Type, 
-    Item_Fat_Content
-    
-Purpose: This subquery groups the data by Outlet_Location_Type and Item_Fat_Content, calculating the total sales for each combination.
-CAST(SUM(Total_Sales) AS DECIMAL(10,2)): Sums the Total_Sales for each group and casts the result to a decimal with two decimal places for precision.
-## 2.PIVOT Operation:
-Pivoting: Transforms the rows of Item_Fat_Content into columns ([Low Fat] and [Regular]).
-PIVOT 
-(
-    SUM(Total_Sales) 
-    FOR Item_Fat_Content IN ([Low Fat], [Regular])
-) AS PivotTable
-
-SUM(Total_Sales): Aggregates the Total_Sales for each Item_Fat_Content category within each Outlet_Location_Type.
-## 3.Main Query:
-• Selecting and Handling NULLs:
-
-SELECT 
-    Outlet_Location_Type, 
-    ISNULL([Low Fat], 0) AS Low_Fat, 
-    ISNULL([Regular], 0) AS Regular
-FROM 
-    PivotTable
-ORDER BY 
-    Outlet_Location_Type;
-ISNULL([Low Fat], 0) AS Low_Fat: Replaces any NULL values in the [Low Fat] column with 0 and renames the column to Low_Fat.
-ISNULL([Regular], 0) AS Regular: Similarly, replaces NULL values in the [Regular] column with 0.
-ORDER BY Outlet_Location_Type: Sorts the final result set by Outlet_Location_Type.
-Why Use ISNULL?
-When performing a PIVOT operation, if a particular combination of Outlet_Location_Type and Item_Fat_Content doesn't exist in the data, the resulting cell will contain a NULL value. Using ISNULL(column) 
-
-
-
-
 ## E. Total Sales by Outlet Establishment
 ```sql
 SELECT Outlet_Establishment_Year, CAST(SUM(Total_Sales) AS DECIMAL(10,2)) AS Total_Sales
@@ -158,20 +111,7 @@ FROM blinkit_data
 GROUP BY Outlet_Size
 ORDER BY Total_Sales DESC;
 ```
-## Query Explanation:
-Outlet_Size: This column represents the size category of the outlet (e.g., Small, Medium, Large).
-CAST(SUM(Total_Sales) AS DECIMAL(10,2)) AS Total_Sales:
-• SUM(Total_Sales): Calculates the total sales for each Outlet_Size.
-• CAST(... AS DECIMAL(10,2)): Formats the resulting sum to a decimal number with two decimal places for precision.
-CAST((SUM(Total_Sales) * 100.0 / SUM(SUM(Total_Sales)) OVER()) AS DECIMAL(10,2)) AS Sales_Percentage:
-• SUM(Total_Sales) * 100.0: Multiplies the total sales of the current Outlet_Size by 100 to prepare for percentage calculation.
-• SUM(SUM(Total_Sales)) OVER():
-• SUM(Total_Sales): Within the GROUP BY context, this computes the total sales for each Outlet_Size.
-• SUM(... ) OVER(): The outer SUM combined with the OVER() clause calculates the grand total of all Total_Sales across all outlet sizes without collapsing the result set. 
-• SUM(Total_Sales) * 100.0 / SUM(SUM(Total_Sales)) OVER(): Divides the total sales of the current Outlet_Size by the grand total sales and multiplies by 100 to get the percentage contribution of each outlet size to the overall sales.
-• CAST(... AS DECIMAL(10,2)): Formats the resulting percentage to two decimal places.
 
- 
 ## G. Sales by Outlet Location
 ```sql
 SELECT Outlet_Location_Type, CAST(SUM(Total_Sales) AS DECIMAL(10,2)) AS Total_Sales
