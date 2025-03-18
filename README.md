@@ -33,7 +33,7 @@ SET Item_Fat_Content =
         WHEN Item_Fat_Content = 'reg' THEN 'Regular'
         ELSE Item_Fat_Content
   END;
-
+```
 After executing this query check the data has been cleaned or not using below query
 SELECT DISTINCT Item_Fat_Content FROM blinkit_data;
 
