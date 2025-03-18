@@ -16,10 +16,10 @@ This project analyzes sales data from Blinkit to extract meaningful insights usi
 
 ---
 ## 📊 KPIs and Metrics
-#1.Total Sales – Total sales in millions.
-#2.Average Sales – Average sales per item.
-#3.Number of Items – Total number of orders.
-#4.Average Rating – Average product rating.
+## 1.Total Sales – Total sales in millions.
+## 2.Average Sales – Average sales per item.
+## 3.Number of Items – Total number of orders.
+## 4.Average Rating – Average product rating.
 
 •See all the data imported:
 ```sql
