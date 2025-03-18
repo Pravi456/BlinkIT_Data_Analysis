@@ -16,13 +16,15 @@ This project analyzes sales data from Blinkit to extract meaningful insights usi
 
 ---
 ## 📊 KPIs and Metrics
-1.Total Sales – Total sales in millions.
-2.Average Sales – Average sales per item.
-3.Number of Items – Total number of orders.
-4.Average Rating – Average product rating.
+#1.Total Sales – Total sales in millions.
+#2.Average Sales – Average sales per item.
+#3.Number of Items – Total number of orders.
+#4.Average Rating – Average product rating.
 
 •See all the data imported:
+```sql
 SELECT * FROM blinkit_data
+```
 ## •DATA CLEANING:
 Cleaning the Item_Fat_Content field ensures data consistency and accuracy in analysis. The presence of multiple variations of the same category (e.g., LF, low fat vs. Low Fat) can cause issues in reporting, aggregations, and filtering. By standardizing these values, we improve data quality, making it easier to generate insights and maintain uniformity in our datasets.
 ```sql
