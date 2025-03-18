@@ -21,10 +21,11 @@ This project analyzes sales data from Blinkit to extract meaningful insights usi
 3.Number of Items – Total number of orders.
 4.Average Rating – Average product rating.
 
-•	See all the data imported:
+•See all the data imported:
 SELECT * FROM blinkit_data
-## •	DATA CLEANING:
+## •DATA CLEANING:
 Cleaning the Item_Fat_Content field ensures data consistency and accuracy in analysis. The presence of multiple variations of the same category (e.g., LF, low fat vs. Low Fat) can cause issues in reporting, aggregations, and filtering. By standardizing these values, we improve data quality, making it easier to generate insights and maintain uniformity in our datasets.
+```sql
 UPDATE blinkit_data
 SET Item_Fat_Content = 
     CASE 
@@ -33,14 +34,10 @@ SET Item_Fat_Content =
         ELSE Item_Fat_Content
   END;
 
-	After executing this query check the data has been cleaned or not using below query
-	SELECT DISTINCT Item_Fat_Content FROM blinkit_data;
+After executing this query check the data has been cleaned or not using below query
+SELECT DISTINCT Item_Fat_Content FROM blinkit_data;
 
 	 
-
-
-
-
 ## A. KPI’s
 ## 1. TOTAL SALES:
 SELECT CAST(SUM(Total_Sales) / 1000000.0 AS DECIMAL(10,2)) AS Total_Sales_Million
